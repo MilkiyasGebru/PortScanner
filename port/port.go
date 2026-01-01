@@ -1,7 +1,6 @@
 package port
 
 import (
-	"fmt"
 	"net"
 	"strconv"
 	"time"
@@ -10,7 +9,7 @@ import (
 func ScanPort(protocol string, hostname string, port int) bool {
 
 	address := hostname + ":" + strconv.Itoa(port)
-	conn, err := net.DialTimeout(protocol, address, 10*time.Second)
+	conn, err := net.DialTimeout(protocol, address, 500*time.Millisecond)
 
 	if err != nil {
 		return false
@@ -44,7 +43,6 @@ func ScanPortStream(done <-chan interface{}, portStream <-chan int) <-chan int {
 
 	go func() {
 		defer close(openPortStream)
-		fmt.Println("Scanning Ports")
 		for {
 			//var port int
 
