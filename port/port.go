@@ -38,7 +38,7 @@ func GeneratePortNumber(done <-chan interface{}, startPort, endPort int) <-chan 
 
 }
 
-func ScanPortStream(done <-chan interface{}, portStream <-chan int) <-chan int {
+func ScanPortStream(done <-chan interface{}, portStream <-chan int, hostname string) <-chan int {
 	openPortStream := make(chan int)
 
 	go func() {
@@ -53,7 +53,7 @@ func ScanPortStream(done <-chan interface{}, portStream <-chan int) <-chan int {
 				if !ok {
 					return
 				}
-				if ScanPort("tcp", "127.0.0.1", port) {
+				if ScanPort("tcp", hostname, port) {
 					openPortStream <- port
 				}
 			}

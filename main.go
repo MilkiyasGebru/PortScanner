@@ -3,12 +3,14 @@ package main
 import (
 	"PortScanner/port"
 	"fmt"
+	"os"
 	"runtime"
 	"sync"
 )
 
 func main() {
-
+	fmt.Println("Port Scanner Package is running")
+	targetHost := os.Args[1]
 	portFinders := runtime.NumCPU()
 	startPort := 10
 	endPort := 60000
@@ -16,7 +18,7 @@ func main() {
 	portNumbersStream := port.GeneratePortNumber(done, startPort, endPort)
 	finders := make([]<-chan int, portFinders)
 	for i := 0; i < portFinders; i++ {
-		finders[i] = port.ScanPortStream(done, portNumbersStream)
+		finders[i] = port.ScanPortStream(done, portNumbersStream, targetHost)
 	}
 
 	fanIn := func(done <-chan interface{}, channels ...<-chan int) <-chan int {
